@@ -11,7 +11,7 @@ Here are some ideas to get you started:
 - 🤔 I’m looking for help with **AI Agent**
 - 📫 How to reach me: [PORTFOLIO](https://checkouthimanshu.web.app)
 - 😄 Pronouns: HE/HIM
-- ⚡ Fun fact: Love [Chess](https://chess.com) ❤️
+- ⚡ Fun fact: Love [Chess]([https://chess.com](https://www.chess.com/member/abnormal_pilot)) ❤️
 
 
 [![An image of @abnormalpilot's Holopin badges, which is a link to view their full Holopin profile](https://holopin.me/abnormalpilot)](https://holopin.io/@abnormalpilot)
