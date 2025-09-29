@@ -1,10 +1,5 @@
 ## Hi there 👋
 
-
-**AbnormalPilot/AbnormalPilot** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
-
-Here are some ideas to get you started:
-
 - 🔭 I’m currently working on [Focus Browser](https://github.com/AbnormalPilot/focusbrowser-app) 
 - 🌱 I’m currently learning [RUST](https://rust-lang.org/)
 - 👯 I’m looking to collaborate on [HacktoberFest](https://hacktoberfest.com/)
