@@ -154,7 +154,7 @@ export default function Hero() {
                         <div className="flex justify-between items-end">
                             <div className="flex flex-col">
                                 <span className="text-[var(--color-text-secondary)] text-[10px] uppercase font-bold tracking-widest">Flight Number</span>
-                                <span className="text-sm font-semibold mt-1">HD001</span>
+                                <span className="text-sm font-semibold mt-1">HD241</span>
                             </div>
                             <div className="flex flex-col text-right">
                                 <span className="text-[var(--color-text-secondary)] text-[10px] uppercase font-bold tracking-widest">Terminal</span>
