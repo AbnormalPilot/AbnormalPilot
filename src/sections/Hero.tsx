@@ -102,7 +102,7 @@ export default function Hero() {
                         </div>
                         
                         {/* Dotted path SVG / Line */}
-                        <div className="absolute top-[40%] left-[30%] right-[30%] h-0.5 border-t-2 border-dashed border-[var(--color-card-border)]">
+                        <div className="flex-1 mx-6 h-0.5 border-t-2 border-dashed border-[var(--color-card-border)] relative">
                             <div className="absolute -top-3 left-1/2 -translate-x-1/2 text-[var(--color-text-secondary)] text-lg">✈</div>
                         </div>
 
