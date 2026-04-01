@@ -1,28 +1,31 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import AnimatedHeaderSection from "@/components/AnimatedHeaderSection";
 import { servicesData } from "@/constants";
-import { useMediaQuery } from "react-responsive";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 
 const Services = () => {
-    const text = `Building a great application is more than just code. 
+    const text = `Building a great application is more than just code.
   It's like creating a soul. That's what I do. `;
     const serviceRefs = useRef<(HTMLDivElement | null)[]>([]);
-    const isDesktop = useMediaQuery({ minWidth: "48rem" });
+    const [isDesktop, setIsDesktop] = useState(false);
+
+    useEffect(() => {
+        const mq = window.matchMedia("(min-width: 48rem)");
+        setIsDesktop(mq.matches);
+        const handler = (e: MediaQueryListEvent) => setIsDesktop(e.matches);
+        mq.addEventListener("change", handler);
+        return () => mq.removeEventListener("change", handler);
+    }, []);
 
     useGSAP(() => {
         serviceRefs.current.forEach((el) => {
             if (!el) return;
-
             gsap.from(el, {
                 y: 200,
-                scrollTrigger: {
-                    trigger: el,
-                    start: "top 80%",
-                },
+                scrollTrigger: { trigger: el, start: "top 80%" },
                 duration: 1,
                 ease: "circ.out",
             });

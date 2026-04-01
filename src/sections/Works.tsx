@@ -1,203 +1,76 @@
 "use client";
 
-import { Icon } from "@iconify/react/dist/iconify.js";
-import AnimatedHeaderSection from "@/components/AnimatedHeaderSection";
 import { projects } from "@/constants";
-import { useRef, useState } from "react";
-import gsap from "gsap";
-import { useGSAP } from "@gsap/react";
+import Image from "next/image";
 
-interface Project {
-    id: number;
-    name: string;
-    description: string;
-    href: string;
-    image: string;
-    bgImage: string;
-    frameworks: { id: number; name: string }[];
-}
-
-const Works = () => {
-    const overlayRefs = useRef<(HTMLDivElement | null)[]>([]);
-    const previewRef = useRef<HTMLDivElement>(null);
-
-    const [currentIndex, setCurrentIndex] = useState<number | null>(null);
-    const text = `Featured projects that have been meticulously
-    crafted with passion to drive
-    results and impact.`;
-
-    const mouse = useRef({ x: 0, y: 0 });
-    const moveX = useRef<gsap.QuickToFunc | null>(null);
-    const moveY = useRef<gsap.QuickToFunc | null>(null);
-
-    useGSAP(() => {
-        moveX.current = gsap.quickTo(previewRef.current, "x", {
-            duration: 1.5,
-            ease: "power3.out",
-        });
-        moveY.current = gsap.quickTo(previewRef.current, "y", {
-            duration: 2,
-            ease: "power3.out",
-        });
-
-        gsap.from("#project", {
-            y: 100,
-            opacity: 0,
-            delay: 0.5,
-            duration: 1,
-            stagger: 0.3,
-            ease: "back.out",
-            scrollTrigger: {
-                trigger: "#project",
-            },
-        });
-    }, []);
-
-    const handleMouseEnter = (index: number) => {
-        if (typeof window !== "undefined" && window.innerWidth < 768) return;
-        setCurrentIndex(index);
-
-        const el = overlayRefs.current[index];
-        if (!el) return;
-
-        gsap.killTweensOf(el);
-        gsap.fromTo(
-            el,
-            {
-                clipPath: "polygon(0 100%, 100% 100%, 100% 100%, 0 100%)",
-            },
-            {
-                clipPath: "polygon(0 0, 100% 0, 100% 100%, 0% 100%)",
-                duration: 0.15,
-                ease: "power2.out",
-            }
-        );
-
-        gsap.to(previewRef.current, {
-            opacity: 1,
-            scale: 1,
-            duration: 0.3,
-            ease: "power2.out",
-        });
-    };
-
-    const handleMouseLeave = (index: number) => {
-        if (typeof window !== "undefined" && window.innerWidth < 768) return;
-        setCurrentIndex(null);
-
-        const el = overlayRefs.current[index];
-        if (!el) return;
-
-        gsap.killTweensOf(el);
-        gsap.to(el, {
-            clipPath: "polygon(0 100%, 100% 100%, 100% 100%, 0 100%)",
-            duration: 0.2,
-            ease: "power2.in",
-        });
-
-        gsap.to(previewRef.current, {
-            opacity: 0,
-            scale: 0.95,
-            duration: 0.3,
-            ease: "power2.out",
-        });
-    };
-
-    const handleMouseMove = (e: React.MouseEvent) => {
-        if (typeof window !== "undefined" && window.innerWidth < 768) return;
-        mouse.current.x = e.clientX + 24;
-        mouse.current.y = e.clientY + 24;
-        moveX.current?.(mouse.current.x);
-        moveY.current?.(mouse.current.y);
-    };
-
-    const handleProjectClick = (project: Project) => {
-        if (project.href) {
-            window.open(project.href, "_blank", "noopener,noreferrer");
-        }
-    };
-
+export default function Works() {
     return (
-        <section id="work" className="flex flex-col min-h-screen">
-            <AnimatedHeaderSection
-                subTitle={"Logic meets Aesthetics, Seamlessly"}
-                title={"Works"}
-                text={text}
-                textColor={"text-black"}
-                withScrollTrigger={true}
-            />
-            <div
-                className="relative flex flex-col font-light"
-                onMouseMove={handleMouseMove}
-            >
-                {projects.map((project, index) => (
+        <section id="work" className="px-6 py-24 relative max-w-5xl mx-auto">
+            {/* Section label */}
+            <div className="flex flex-col items-center mb-16 space-y-4">
+                <span className="text-[#A855F7] text-sm font-bold tracking-[0.2em] uppercase">
+                    Destinations
+                </span>
+                <h2 className="text-4xl md:text-5xl font-extrabold text-white tracking-tight text-center">
+                    Best Flights
+                </h2>
+                <p className="text-[#A1A1AA] text-center max-w-lg mx-auto">
+                    Explore high-quality web experiences without the hassle. Get started today to find your next digital journey!
+                </p>
+            </div>
+
+            {/* "Best Flights" Cards Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 place-items-center">
+                {projects.map((project) => (
                     <div
                         key={project.id}
-                        id="project"
-                        className="relative flex flex-col gap-1 py-5 cursor-pointer group md:gap-0"
-                        onMouseEnter={() => handleMouseEnter(index)}
-                        onMouseLeave={() => handleMouseLeave(index)}
-                        onClick={() => handleProjectClick(project)}
+                        className="w-full max-w-[340px] rounded-[32px] border border-[#2C2C2E] bg-[#1C1C1E] shadow-xl overflow-hidden flex flex-col hover:border-[#A855F7]/40 transition-all duration-300 group"
                     >
-                        {/* overlay */}
-                        <div
-                            ref={(el) => {
-                                overlayRefs.current[index] = el;
-                            }}
-                            className="absolute inset-0 hidden md:block duration-200 bg-black -z-10 clip-path"
-                        />
+                        {/* Airplane Window Placeholder */}
+                        <div className="relative w-[340px] h-[340px] flex items-center justify-center p-8 overflow-hidden bg-gradient-to-b from-[#A855F7]/10 to-transparent">
+                            <div className="absolute inset-x-0 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[240px] h-[300px] bg-white rounded-full scale-110 shadow-[inset_0_0_40px_rgba(0,0,0,0.8)] opacity-20 pointer-events-none" />
+                            <div className="relative w-full h-full rounded-[100px] overflow-hidden shadow-[inset_0_4px_24px_rgba(0,0,0,0.6)] border-4 border-[#2C2C2E]">
+                                <Image 
+                                    src="/assets/airplane-window.png" 
+                                    alt="Airplane Window" 
+                                    fill 
+                                    className="object-cover group-hover:scale-110 transition-transform duration-700"
+                                />
+                                {/* Optional overlay gradient on window */}
+                                <div className="absolute inset-0 bg-gradient-to-t from-[rgba(15,15,18,0.7)] to-transparent pointer-events-none" />
+                            </div>
+                        </div>
 
-                        {/* title */}
-                        <div className="flex justify-between px-10 text-black transition-all duration-500 md:group-hover:px-12 md:group-hover:text-white">
-                            <h2 className="lg:text-[32px] text-[26px] leading-none">
+                        {/* Text and Action */}
+                        <div className="p-6 pt-2 flex flex-col flex-1">
+                            <h3 className="text-xl font-bold text-white mb-2 group-hover:text-[#A855F7] transition-colors">
                                 {project.name}
-                            </h2>
-                            <Icon icon="lucide:arrow-up-right" className="md:size-6 size-5" />
-                        </div>
-                        {/* divider */}
-                        <div className="w-full h-0.5 bg-black/80" />
-                        {/* framework */}
-                        <div className="flex px-10 text-xs leading-loose uppercase transtion-all duration-500 md:text-sm gap-x-5 md:group-hover:px-12">
-                            {project.frameworks.map((framework) => (
-                                <p
-                                    key={framework.id}
-                                    className="text-black transition-colors duration-500 md:group-hover:text-white"
-                                >
-                                    {framework.name}
-                                </p>
-                            ))}
-                        </div>
-                        {/* mobile preview image */}
-                        <div className="relative flex items-center justify-center px-10 md:hidden h-[400px]">
-                            <img
-                                src={project.bgImage}
-                                alt={`${project.name}-bg-image`}
-                                className="object-cover w-full h-full rounded-md brightness-50"
-                            />
-                            <img
-                                src={project.image}
-                                alt={`${project.name}-image`}
-                                className="absolute bg-center px-14 rounded-xl"
-                            />
+                            </h3>
+                            <p className="text-sm text-[#A1A1AA] leading-relaxed line-clamp-3 mb-6 flex-1">
+                                {project.description}
+                            </p>
+                            
+                            {/* Tech Stack Pills */}
+                            <div className="flex flex-wrap gap-2 mb-6">
+                                {project.frameworks.slice(0, 3).map((fw) => (
+                                    <span key={fw.id} className="text-[10px] uppercase tracking-wider bg-[#2C2C2E] text-[#A1A1AA] px-2 py-1 rounded-sm">
+                                        {fw.name}
+                                    </span>
+                                ))}
+                            </div>
+
+                            <a
+                                href={project.href || "#"}
+                                target={project.href ? "_blank" : undefined}
+                                rel="noopener noreferrer"
+                                className="w-full py-4 text-center rounded-full bg-gradient-to-r from-[#A855F7] to-[#EC4899] text-white font-bold text-sm tracking-wide shadow-lg glow-btn transition-transform hover:scale-[1.02] active:scale-95"
+                            >
+                                {project.href ? "Get Started!" : "Private / Pending"}
+                            </a>
                         </div>
                     </div>
                 ))}
-                {/* desktop floating preview image */}
-                <div
-                    ref={previewRef}
-                    className="fixed -top-2/6 left-0 z-50 overflow-hidden border-8 border-black pointer-events-none w-[960px] md:block hidden opacity-0"
-                >
-                    {currentIndex !== null && (
-                        <img
-                            src={projects[currentIndex].image}
-                            alt="preview"
-                            className="object-cover w-full h-full"
-                        />
-                    )}
-                </div>
             </div>
         </section>
     );
-};
-
-export default Works;
+}

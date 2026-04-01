@@ -1,135 +1,77 @@
 @import "tailwindcss";
 
-/* Amiamie Regular */
-@font-face {
-  font-family: "Amiamie";
-  src: url("/fonts/amiamie/otf/Amiamie-Regular.otf") format("opentype"),
-    url("/fonts/amiamie/ttf/Amiamie-Regular.ttf") format("truetype");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-/* Amiamie Regular Italic */
-@font-face {
-  font-family: "Amiamie";
-  src: url("/fonts/amiamie/otf/Amiamie-Italic.otf") format("opentype"),
-    url("/fonts/amiamie/ttf/Amiamie-Italic.ttf") format("truetype");
-  font-weight: 400;
-  font-style: italic;
-  font-display: swap;
-}
-
-/* Amiamie Light */
-@font-face {
-  font-family: "Amiamie";
-  src: url("/fonts/amiamie/otf/Amiamie-Light.otf") format("opentype"),
-    url("/fonts/amiamie/ttf/Amiamie-Light.ttf") format("truetype");
-  font-weight: 300;
-  font-style: normal;
-  font-display: swap;
-}
-
-/* Amiamie Light Italic */
-@font-face {
-  font-family: "Amiamie";
-  src: url("/fonts/amiamie/otf/Amiamie-LightItalic.otf") format("opentype"),
-    url("/fonts/amiamie/ttf/Amiamie-LightItalic.ttf") format("truetype");
-  font-weight: 300;
-  font-style: italic;
-  font-display: swap;
-}
-
-/* Amiamie Black */
-@font-face {
-  font-family: "Amiamie";
-  src: url("/fonts/amiamie/otf/Amiamie-Black.otf") format("opentype"),
-    url("/fonts/amiamie/ttf/Amiamie-Black.ttf") format("truetype");
-  font-weight: 900;
-  font-style: normal;
-  font-display: swap;
-}
-
-/* Amiamie Black Italic */
-@font-face {
-  font-family: "Amiamie";
-  src: url("/fonts/amiamie/otf/Amiamie-BlackItalic.otf") format("opentype"),
-    url("/fonts/amiamie/ttf/Amiamie-BlackItalic.ttf") format("truetype");
-  font-weight: 900;
-  font-style: italic;
-  font-display: swap;
-}
-
-/* Amiamie-Round Variants (if needed separately) */
-@font-face {
-  font-family: "Amiamie-Round";
-  src: url("/fonts/amiamie/otf/Amiamie-RegularRound.otf") format("opentype"),
-    url("/fonts/amiamie/ttf/Amiamie-RegularRound.ttf") format("truetype");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Amiamie-Round";
-  src: url("/fonts/amiamie/otf/Amiamie-BlackRound.otf") format("opentype"),
-    url("/fonts/amiamie/ttf/Amiamie-BlackRound.ttf") format("truetype");
-  font-weight: 900;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Amiamie-Round";
-  src: url("/fonts/amiamie/otf/Amiamie-BlackItalicRound.otf") format("opentype"),
-    url("/fonts/amiamie/ttf/Amiamie-BlackItalicRound.ttf") format("truetype");
-  font-weight: 900;
-  font-style: italic;
-  font-display: swap;
-}
 @theme {
-  --color-primary: #e5e5e0;
-  --color-DarkLava: #393632;
-  --color-SageGray: #8b8b73;
-  --color-gold: #cfa355;
-  --font-amiamie: "Amiamie", sans-serif;
-  --font-amiamie-round: "Amiamie-Round", sans-serif;
+  --color-app-bg: #0F0F12;
+  --color-card-bg: #1C1C1E;
+  --color-card-border: #2C2C2E;
+  --color-accent-purple: #A855F7;
+  --color-accent-pink: #EC4899;
+  --color-text-primary: #FFFFFF;
+  --color-text-secondary: #A1A1AA;
+}
 
-  --animate-marquee: marquee 40s infinite linear;
-  @keyframes marquee {
-    from {
-      transform: translateX(0);
-    }
-    to {
-      transform: translateX(calc(-100% - var(--gap)));
-    }
-  }
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: #e5e5e0;
-  color: black;
-  scroll-behavior: smooth;
+  background: var(--color-app-bg);
+  color: var(--color-text-primary);
   overflow-x: hidden;
-  font-family: var(--font-amiamie);
+  font-family: var(--font-inter), system-ui, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-@utility clip-path {
-  clip-path: polygon(0 100%, 100% 100%, 100% 100%, 0 100%);
+/* ── Scrollbar ──────────────────────────────────────────── */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--color-app-bg); }
+::-webkit-scrollbar-thumb { background: var(--color-card-border); border-radius: 2px; }
+
+/* ── Airplane Boarding Pass Tear Effects ────────────────── */
+.boarding-tear-top {
+  mask-image: radial-gradient(circle at 12px 100%, transparent 12px, black 13px);
+  -webkit-mask-image: radial-gradient(circle at 12px 100%, transparent 12px, black 13px);
 }
 
-@utility banner-text-responsive {
-  @apply text-[68px] sm:text-[118px] md:text-[126px] lg:text-[152px] leading-9 sm:leading-16 lg:leading-20;
+.boarding-tear-bottom {
+  mask-image: radial-gradient(circle at 12px 0%, transparent 12px, black 13px);
+  -webkit-mask-image: radial-gradient(circle at 12px 0%, transparent 12px, black 13px);
 }
 
-@utility value-text-responsive {
-  @apply text-2xl md:text-[26px] lg:text-[32px];
+.boarding-tear-left {
+  mask-image: radial-gradient(circle at 100% 12px, transparent 12px, black 13px);
+  -webkit-mask-image: radial-gradient(circle at 100% 12px, transparent 12px, black 13px);
 }
 
-@utility marquee-text-responsive {
-  @apply text-[28px] sm:text-[36px] lg:text-[42px];
+.boarding-tear-right {
+  mask-image: radial-gradient(circle at 0% 12px, transparent 12px, black 13px);
+  -webkit-mask-image: radial-gradient(circle at 0% 12px, transparent 12px, black 13px);
 }
 
-@utility contact-text-responsive {
-  @apply text-[42px] sm:text-[52px] md:text-[62px] lg:text-[100px];
+/* Modern Gradient Glow Drop shadows */
+.glow-purple {
+  box-shadow: 0 0 40px rgba(168, 85, 247, 0.15);
+}
+
+.glow-btn {
+  box-shadow: 0 8px 32px rgba(168, 85, 247, 0.4);
+}
+
+/* ── Utilities ─────────────────────────────────────────── */
+.glass {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
 }

@@ -1,87 +1,92 @@
 "use client";
 
-import { useGSAP } from "@gsap/react";
-import AnimatedHeaderSection from "@/components/AnimatedHeaderSection";
-import Marquee from "@/components/Marquee";
 import { socials } from "@/constants";
-import gsap from "gsap";
 
-const Contact = () => {
-    const text = `Exploring new orbits? Lets Colaborate! "`;
-    const items = [
-        "feel free to connect",
-        "collab?",
-        "be cut above",
-        "space is the limit",
-        "live life less ordinary",
-    ];
-
-    useGSAP(() => {
-        gsap.from(".social-link", {
-            y: 100,
-            opacity: 0,
-            delay: 0.5,
-            duration: 1,
-            stagger: 0.3,
-            ease: "back.out",
-            scrollTrigger: {
-                trigger: ".social-link",
-            },
-        });
-    }, []);
-
+export default function Contact() {
     return (
-        <section
-            id="contact"
-            className="flex flex-col justify-between min-h-screen bg-black"
-        >
-            <div>
-                <AnimatedHeaderSection
-                    subTitle={"You Dream It, I Code it"}
-                    title={"Contact"}
-                    text={text}
-                    textColor={"text-white"}
-                    withScrollTrigger={true}
-                />
-                <div className="flex px-10 font-light text-white uppercase lg:text-[32px] text-[26px] leading-none mb-10">
-                    <div className="flex flex-col w-full gap-10">
-                        <div className="social-link">
-                            <h2>E-mail</h2>
-                            <div className="w-full h-px my-2 bg-white/30" />
-                            <p className="text-xl tracking-wider lowercase md:text-2xl lg:text-3xl">
-                                himanshudubey@welocalhost.com
-                            </p>
+        <section id="contact" className="px-6 py-24 relative max-w-3xl mx-auto">
+            <div className="flex flex-col items-center mb-16 space-y-4">
+                <span className="text-[#A855F7] text-sm font-bold tracking-[0.2em] uppercase">
+                    Approach Frequency
+                </span>
+                <h2 className="text-4xl md:text-5xl font-extrabold text-white tracking-tight text-center">
+                    Book Flight
+                </h2>
+                <p className="text-[#A1A1AA] text-center max-w-lg mx-auto">
+                    Ready to launch your next idea? Fill out your manifest and let's get you cleared for takeoff.
+                </p>
+            </div>
+
+            {/* Form & Contact Details Container */}
+            <div className="w-full rounded-[40px] border-[6px] border-[#1C1C1E] bg-[#0F0F12] shadow-2xl p-8 md:p-12">
+                
+                <form className="flex flex-col gap-6" onSubmit={(e) => e.preventDefault()}>
+                    {/* Passenger Inputs */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="flex flex-col gap-2">
+                            <label className="text-[10px] uppercase font-bold text-[#A1A1AA] tracking-widest pl-2">Passenger Name</label>
+                            <input 
+                                type="text"
+                                placeholder="John Doe"
+                                className="w-full bg-[#1C1C1E] text-white border border-[#2C2C2E] rounded-2xl px-6 py-4 outline-none focus:border-[#A855F7] transition-colors"
+                            />
                         </div>
-                        <div className="social-link">
-                            <h2>Phone</h2>
-                            <div className="w-full h-px my-2 bg-white/30" />
-                            <p className="text-xl lowercase md:text-2xl lg:text-3xl">
-                                +91 63788 69267
-                            </p>
-                        </div>
-                        <div className="social-link">
-                            <h2>Social Media</h2>
-                            <div className="w-full h-px my-2 bg-white/30" />
-                            <div className="flex flex-wrap gap-2">
-                                {socials.map((social, index) => (
-                                    <a
-                                        key={index}
-                                        href={social.href}
-                                        className="text-xs leading-loose tracking-wides uppercase md:text-sm hover:text-white/80 transition-colors duration-200"
-                                    >
-                                        {"{ "}
-                                        {social.name}
-                                        {" }"}
-                                    </a>
-                                ))}
-                            </div>
+                        <div className="flex flex-col gap-2">
+                            <label className="text-[10px] uppercase font-bold text-[#A1A1AA] tracking-widest pl-2">Email Address</label>
+                            <input 
+                                type="email"
+                                placeholder="john@example.com"
+                                className="w-full bg-[#1C1C1E] text-white border border-[#2C2C2E] rounded-2xl px-6 py-4 outline-none focus:border-[#A855F7] transition-colors"
+                            />
                         </div>
                     </div>
+
+                    {/* Cargo / Message */}
+                    <div className="flex flex-col gap-2">
+                        <label className="text-[10px] uppercase font-bold text-[#A1A1AA] tracking-widest pl-2">Flight Requirements</label>
+                        <textarea 
+                            rows={4}
+                            placeholder="Tell me about your next digital destination..."
+                            className="w-full bg-[#1C1C1E] text-white border border-[#2C2C2E] rounded-2xl px-6 py-4 outline-none focus:border-[#A855F7] transition-colors resize-none"
+                        />
+                    </div>
+
+                    <a
+                        href="mailto:himanshudubey@welocalhost.com"
+                        className="mt-4 w-full py-5 text-center flex items-center justify-center gap-3 rounded-full bg-gradient-to-r from-[#A855F7] to-[#EC4899] text-white font-extrabold text-base tracking-wide shadow-lg glow-btn transition-transform hover:scale-[1.02] active:scale-95"
+                    >
+                        <span>Send Transmission</span>
+                        <span className="text-xl">✈</span>
+                    </a>
+                </form>
+
+                {/* Separator */}
+                <div className="flex items-center my-10 border-t border-[#2C2C2E]/50">
+                    <span className="mx-auto -mt-3 bg-[#0F0F12] px-4 text-[10px] uppercase font-bold text-[#2C2C2E] tracking-widest">Or connect via</span>
+                </div>
+
+                {/* Social Frequencies */}
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    {socials.map((s) => (
+                        <a
+                            key={s.name}
+                            href={s.href}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex flex-col items-center gap-2 p-4 rounded-3xl bg-[#1C1C1E] border border-[#2C2C2E] hover:border-[#A855F7]/40 hover:bg-[#A855F7]/10 transition-all group"
+                        >
+                            <span className="text-sm font-semibold text-white group-hover:text-[#A855F7] transition-colors">{s.name}</span>
+                            <span className="text-[10px] text-[#A1A1AA]">FREQ CH</span>
+                        </a>
+                    ))}
                 </div>
             </div>
-            <Marquee items={items} className="text-white bg-transparent" />
+            
+            {/* Footer details */}
+            <div className="mt-16 text-center text-[#6B7280] text-xs font-semibold tracking-wider flex flex-col items-center gap-2">
+                <div className="w-1.5 h-1.5 rounded-full bg-gradient-to-tr from-[#A855F7] to-[#EC4899] glow-purple" />
+                © {new Date().getFullYear()} HD-OPS. ALL FLIGHTS RESERVED.
+            </div>
         </section>
     );
-};
-
-export default Contact;
+}

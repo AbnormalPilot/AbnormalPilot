@@ -1,289 +1,147 @@
 "use client";
 
-import { useRef } from "react";
-import AnimatedHeaderSection from "@/components/AnimatedHeaderSection";
-import { AnimatedTextLines } from "@/components/AnimatedTextLines";
-import { useGSAP } from "@gsap/react";
-import gsap from "gsap";
+import { useState } from "react";
 
-interface EducationItem {
-    icon: string;
-    degree: string;
-    institution: string;
-    url: string;
-    year: string;
-    hoverColor: string;
-}
+const SKILL_ROWS = [
+    { label: "React",   id: "A1", status: "selected" },
+    { label: "Next.js", id: "B1", status: "occupied" },
+    { label: "Tailwind",id: "C1", status: "occupied" },
+    { label: "Node.js", id: "D1", status: "occupied" },
+    { label: "Express", id: "E1", status: "available" },
+    { label: "Postgres",id: "F1", status: "available" },
+    { label: "MongoDB", id: "A2", status: "occupied" },
+    { label: "ReactNative",id:"B2",status: "selected" },
+    { label: "TypeScript",id:"C2",status: "occupied" },
+    { label: "GraphQL", id: "D2", status: "available" },
+];
 
-interface AchievementItem {
-    icon: string;
-    title: string;
-    issuer: string;
-    url: string;
-    date: string;
-    hoverColor: string;
-}
-
-interface ActivityItem {
-    icon: string;
-    label: string;
-    url: string;
-    hoverColor: string;
-}
-
-const About = () => {
-    const text = `Passionate about clean architecture
-    I build scalable, high-performance solutions
-    from prototype to production`;
-
-    const aboutText = ``;
-
-    const education: EducationItem[] = [
-        {
-            icon: "📚",
-            degree: "Senior Secondary Education",
-            institution: "Kendriya Vidyalaya",
-            url: "https://aliganjshift2.kvs.ac.in/",
-            year: "2024",
-            hoverColor: "hover:text-blue-400",
-        },
-        {
-            icon: "🎓",
-            degree: "Bachelor of Technology in Computer Science(AI & ML)",
-            institution: "Newton School of Technology, ADYPU Pune",
-            url: "https://www.newtonschool.co/newton-school-of-technology-nst/nst-adypu-pune",
-            year: "2025-2029",
-            hoverColor: "hover:text-green-400",
-        },
-    ];
-
-    const achievements: AchievementItem[] = [
-        {
-            icon: "🏆",
-            title: "Inspire Award MANAK",
-            issuer: "Department of Science & Technology",
-            url: "https://drive.google.com/drive/folders/1RdWSHG47svhyDgpvHiVlKiNwAVt5dNXz?usp=sharing",
-            date: "2020",
-            hoverColor: "hover:text-orange-400",
-        },
-        {
-            icon: "🥇",
-            title: "Building AI Readiness Among Young Innovators",
-            issuer: "INTEL India & DST",
-            url: "https://drive.google.com/drive/folders/1rlHOek68BZwPnuhGAOUJKHYIS3P98m23?usp=sharing",
-            date: "2022",
-            hoverColor: "hover:text-blue-400",
-        },
-        {
-            icon: "⭐",
-            title: "Youth Unnati & Vikas using AI",
-            issuer: "INTEL India & DST ",
-            url: "https://drive.google.com/drive/folders/1XVguGGk35WKQYtgWCzawIp2Fg3978hov?usp=sharing",
-            date: "2023",
-            hoverColor: "hover:text-green-400",
-        },
-    ];
-
-    const activities: ActivityItem[] = [
-        {
-            icon: "♙",
-            label: "Play Chess",
-            url: "https://chess.com/member/Abnormal_Pilot",
-            hoverColor: "hover:text-green-400",
-        },
-        {
-            icon: "🎶",
-            label: "Listen to music",
-            url: "https://open.spotify.com/playlist/2aJgHuXPj8a27kDQ5opeKv?si=332671e3c1794379",
-            hoverColor: "hover:text-green-400",
-        },
-        {
-            icon: "💪",
-            label: "Gym",
-            url: "https://maps.app.goo.gl/aCH2XUqbSsrZS2kw7",
-            hoverColor: "hover:text-red-400",
-        },
-    ];
-
-    const imgRef = useRef<HTMLImageElement>(null);
-
-    useGSAP(() => {
-        gsap.to("#about", {
-            scale: 0.95,
-            scrollTrigger: {
-                trigger: "#about",
-                start: "bottom 80%",
-                end: "bottom 20%",
-                scrub: true,
-                markers: false,
-            },
-            ease: "power1.inOut",
-        });
-
-        gsap.set(imgRef.current, {
-            clipPath: "polygon(0 100%, 100% 100%, 100% 100%, 0% 100%)",
-        });
-        gsap.to(imgRef.current, {
-            clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",
-            duration: 2,
-            ease: "power4.out",
-            scrollTrigger: { trigger: imgRef.current },
-        });
-    });
+export default function About() {
+    const [selectedSkill, setSelectedSkill] = useState("A1");
 
     return (
-        <section id="about" className="min-h-screen bg-black rounded-b-4xl">
-            <AnimatedHeaderSection
-                subTitle={"Code with purpose, Built to scale"}
-                title={"About"}
-                text={text}
-                textColor={"text-white"}
-                withScrollTrigger={true}
-            />
-            <div className="flex flex-col items-center justify-between gap-16 px-10 pb-16 text-xl font-light tracking-wide lg:flex-row md:text-2xl lg:text-3xl text-white/60">
-                <img
-                    ref={imgRef}
-                    src="images/man.jpeg"
-                    alt="man"
-                    className="w-md rounded-3xl"
-                />
-                <div className="w-full space-y-8">
-                    <AnimatedTextLines text={aboutText} className={"w-full"} />
-
-                    {/* Education Section */}
-                    <div className="space-y-4 pt-6">
-                        <h3 className="text-2xl font-medium text-white/80 mb-6 flex items-center gap-2">
-                            <span>📖</span> Education
-                        </h3>
-                        <div className="space-y-4">
-                            {education.map((edu, index) => (
-                                <a
-                                    key={index}
-                                    href={edu.url}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className={`block p-4 bg-white/5 rounded-xl ${edu.hoverColor} transition-all duration-300 hover:scale-105 hover:bg-white/10 group cursor-pointer border border-white/10 hover:border-white/20`}
-                                >
-                                    <div className="flex items-start justify-between">
-                                        <div className="flex items-start gap-3">
-                                            <span className="text-2xl group-hover:scale-110 transition-transform duration-300">
-                                                {edu.icon}
-                                            </span>
-                                            <div>
-                                                <h4 className="font-medium text-white/90 group-hover:text-white transition-colors duration-300">
-                                                    {edu.degree}
-                                                </h4>
-                                                <p className="text-white/60 font-light">
-                                                    {edu.institution} • {edu.year}
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <svg
-                                            className="w-5 h-5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-white/60"
-                                            fill="currentColor"
-                                            viewBox="0 0 20 20"
-                                        >
-                                            <path
-                                                fillRule="evenodd"
-                                                d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
-                                                clipRule="evenodd"
-                                            />
-                                        </svg>
-                                    </div>
-                                </a>
-                            ))}
-                        </div>
+        <section id="manifest" className="px-6 py-24 relative max-w-5xl mx-auto flex flex-col md:flex-row gap-12 items-center">
+            
+            {/* Text / Profile Content */}
+            <div className="flex-1 space-y-6">
+                <div className="text-[#A855F7] text-sm font-bold tracking-[0.2em] uppercase">
+                    Passenger Manifest
+                </div>
+                <h2 className="text-4xl md:text-5xl font-extrabold text-white tracking-tight">
+                    Cleared for <br />
+                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#A855F7] to-[#EC4899]">
+                        Takeoff
+                    </span>
+                </h2>
+                <p className="text-[#A1A1AA] leading-relaxed text-lg">
+                    I am a full-stack developer with over 3 years of flight time navigating modern web and mobile architectures. My mission is to build scalable, high-performance applications that deliver a first-class user experience.
+                </p>
+                <div className="flex gap-4 pt-4">
+                    <div className="flex flex-col">
+                        <span className="text-xs text-[#6B7280] font-bold uppercase tracking-widest">Base</span>
+                        <span className="text-white font-medium mt-1">India</span>
                     </div>
-
-                    {/* Achievements Section */}
-                    <div className="space-y-4 pt-6">
-                        <h3 className="text-2xl font-medium text-white/80 mb-6 flex items-center gap-2">
-                            <span>🏅</span> Achievements
-                        </h3>
-                        <div className="space-y-4">
-                            {achievements.map((achievement, index) => (
-                                <a
-                                    key={index}
-                                    href={achievement.url}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className={`block p-4 bg-white/5 rounded-xl ${achievement.hoverColor} transition-all duration-300 hover:scale-105 hover:bg-white/10 group cursor-pointer border border-white/10 hover:border-white/20`}
-                                >
-                                    <div className="flex items-start justify-between">
-                                        <div className="flex items-start gap-3">
-                                            <span className="text-2xl group-hover:scale-110 transition-transform duration-300">
-                                                {achievement.icon}
-                                            </span>
-                                            <div>
-                                                <h4 className="font-medium text-white/90 group-hover:text-white transition-colors duration-300">
-                                                    {achievement.title}
-                                                </h4>
-                                                <p className="text-white/60 font-light">
-                                                    {achievement.issuer} • {achievement.date}
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <div className="flex items-center gap-2">
-                                            <span className="text-sm text-white/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                                                View Certificate
-                                            </span>
-                                            <svg
-                                                className="w-5 h-5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-white/60"
-                                                fill="currentColor"
-                                                viewBox="0 0 20 20"
-                                            >
-                                                <path
-                                                    fillRule="evenodd"
-                                                    d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
-                                                    clipRule="evenodd"
-                                                />
-                                            </svg>
-                                        </div>
-                                    </div>
-                                </a>
-                            ))}
-                        </div>
-                    </div>
-
-                    {/* Activities Section */}
-                    <div className="space-y-4 pt-6">
-                        <h3 className="text-2xl font-medium text-white/80 mb-6 flex items-center gap-2">
-                            <span>🎯</span> When I&apos;m not coding:
-                        </h3>
-                        <div className="space-y-3">
-                            {activities.map((activity, index) => (
-                                <a
-                                    key={index}
-                                    href={activity.url}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className={`flex items-center gap-3 text-white/60 ${activity.hoverColor} transition-all duration-300 hover:scale-105 hover:translate-x-2 group cursor-pointer`}
-                                >
-                                    <span className="text-2xl group-hover:scale-110 transition-transform duration-300">
-                                        {activity.icon}
-                                    </span>
-                                    <span className="font-light tracking-wide group-hover:font-normal transition-all duration-300">
-                                        {activity.label}
-                                    </span>
-                                    <svg
-                                        className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ml-auto"
-                                        fill="currentColor"
-                                        viewBox="0 0 20 20"
-                                    >
-                                        <path
-                                            fillRule="evenodd"
-                                            d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
-                                            clipRule="evenodd"
-                                        />
-                                    </svg>
-                                </a>
-                            ))}
-                        </div>
+                    <div className="w-px bg-[#2C2C2E]" />
+                    <div className="flex flex-col">
+                        <span className="text-xs text-[#6B7280] font-bold uppercase tracking-widest">Clearance</span>
+                        <span className="text-white font-medium mt-1">Full-Stack Ops</span>
                     </div>
                 </div>
             </div>
+
+            {/* "Seat Selection" App UI Mockup */}
+            <div className="w-full max-w-[360px] h-[640px] rounded-[40px] border-[6px] border-[#1C1C1E] bg-[#0F0F12] shadow-2xl flex flex-col pt-8 pb-6 px-6 relative overflow-hidden">
+                <div className="text-center font-semibold text-white mb-6">Select Skill</div>
+                
+                {/* Legend */}
+                <div className="flex justify-between items-center mb-10 px-2">
+                    <div className="flex items-center gap-2">
+                        <div className="w-3 h-3 rounded-full bg-[#1C1C1E]" />
+                        <span className="text-[10px] text-[#A1A1AA]">Available</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                        <div className="w-3 h-3 rounded-full bg-[#2C2C2E]" />
+                        <span className="text-[10px] text-[#A1A1AA]">Core</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                        <div className="w-3 h-3 rounded-full bg-gradient-to-tr from-[#A855F7] to-[#EC4899]" />
+                        <span className="text-[10px] text-white">Active</span>
+                    </div>
+                </div>
+
+                {/* Grid */}
+                <div className="flex-1 flex flex-col gap-4">
+                    {/* Rows */}
+                    {Array.from({ length: 6 }).map((_, rowIndex) => (
+                        <div key={rowIndex} className="flex justify-between items-center w-full">
+                            <div className="flex gap-3">
+                                <Seat
+                                    id={`A${rowIndex + 1}`}
+                                    status={rowIndex === 1 ? "selected" : rowIndex < 3 ? "occupied" : "available"}
+                                    active={selectedSkill}
+                                    set={setSelectedSkill}
+                                />
+                                <Seat
+                                    id={`B${rowIndex + 1}`}
+                                    status={rowIndex % 2 === 0 ? "occupied" : "available"}
+                                    active={selectedSkill}
+                                    set={setSelectedSkill}
+                                />
+                            </div>
+                            
+                            {/* Aisle Text / Or spacing */}
+                            <div className="w-8 flex justify-center text-[10px] text-[#2C2C2E] font-bold">
+                                {rowIndex + 1}
+                            </div>
+                            
+                            <div className="flex gap-3">
+                                <Seat
+                                    id={`C${rowIndex + 1}`}
+                                    status={rowIndex === 3 ? "selected" : "occupied"}
+                                    active={selectedSkill}
+                                    set={setSelectedSkill}
+                                />
+                                <Seat
+                                    id={`D${rowIndex + 1}`}
+                                    status={rowIndex > 3 ? "available" : "occupied"}
+                                    active={selectedSkill}
+                                    set={setSelectedSkill}
+                                />
+                            </div>
+                        </div>
+                    ))}
+                </div>
+
+                {/* Bottom Bar */}
+                <div className="mt-auto bg-white rounded-[24px] p-4 flex justify-between items-center shadow-lg">
+                    <div className="flex flex-col">
+                        <span className="text-[10px] text-[#6B7280] font-bold uppercase">Focus</span>
+                        <span className="text-sm font-extrabold text-[#1C1C1E]">
+                            {selectedSkill === "A2" ? "React" : selectedSkill === "C4" ? "Next.js" : "Fullstack"}
+                        </span>
+                    </div>
+                    <button className="bg-gradient-to-r from-[#A855F7] to-[#EC4899] text-white text-xs font-bold py-3 px-6 rounded-full shadow-lg glow-btn">
+                        Deploy Now
+                    </button>
+                </div>
+            </div>
+
         </section>
     );
-};
+}
 
-export default About;
+function Seat({ id, status, active, set }: { id: string, status: string, active: string, set: (s: string) => void }) {
+    const isSelected = active === id || status === "selected";
+    
+    let bg = "bg-[#1C1C1E]"; // default available
+    if (status === "occupied") bg = "bg-[#2C2C2E]";
+    if (isSelected) bg = "bg-gradient-to-tr from-[#A855F7] to-[#EC4899] glow-purple";
+
+    return (
+        <button
+            onClick={() => set(id)}
+            className={`w-10 h-10 md:w-11 md:h-11 rounded-full flex items-center justify-center text-[10px] font-bold transition-all duration-300 ${bg} ${isSelected ? "text-white" : "text-[#6B7280]"}`}
+        >
+            {id}
+        </button>
+    );
+}
