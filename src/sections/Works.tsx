@@ -11,10 +11,10 @@ export default function Works() {
                 <span className="text-[#A855F7] text-sm font-bold tracking-[0.2em] uppercase">
                     Destinations
                 </span>
-                <h2 className="text-4xl md:text-5xl font-extrabold text-white tracking-tight text-center">
+                <h2 className="text-4xl md:text-5xl font-extrabold text-text-primary tracking-tight text-center">
                     Best Flights
                 </h2>
-                <p className="text-[#A1A1AA] text-center max-w-lg mx-auto">
+                <p className="text-text-secondary text-center max-w-lg mx-auto">
                     Explore high-quality web experiences without the hassle. Get started today to find your next digital journey!
                 </p>
             </div>
@@ -24,7 +24,7 @@ export default function Works() {
                 {projects.map((project) => (
                     <div
                         key={project.id}
-                        className="w-full max-w-[340px] rounded-[32px] border border-[#2C2C2E] bg-[#1C1C1E] shadow-xl overflow-hidden flex flex-col hover:border-[#A855F7]/40 transition-all duration-300 group"
+                        className="w-full max-w-[340px] rounded-[32px] glass shadow-xl overflow-hidden flex flex-col hover:border-[#A855F7]/40 transition-all duration-300 group"
                     >
                         {/* Airplane Window Placeholder */}
                         <div className="relative w-[340px] h-[340px] flex items-center justify-center p-8 overflow-hidden bg-gradient-to-b from-[#A855F7]/10 to-transparent">
@@ -43,10 +43,10 @@ export default function Works() {
 
                         {/* Text and Action */}
                         <div className="p-6 pt-2 flex flex-col flex-1">
-                            <h3 className="text-xl font-bold text-white mb-2 group-hover:text-[#A855F7] transition-colors">
+                            <h3 className="text-xl font-bold text-text-primary mb-2 group-hover:text-[#A855F7] transition-colors">
                                 {project.name}
                             </h3>
-                            <p className="text-sm text-[#A1A1AA] leading-relaxed line-clamp-3 mb-6 flex-1">
+                            <p className="text-sm text-text-secondary leading-relaxed line-clamp-3 mb-6 flex-1">
                                 {project.description}
                             </p>
                             

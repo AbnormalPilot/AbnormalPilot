@@ -1,13 +1,43 @@
 @import "tailwindcss";
 
 @theme {
-  --color-app-bg: #0F0F12;
-  --color-card-bg: #1C1C1E;
-  --color-card-border: #2C2C2E;
-  --color-accent-purple: #A855F7;
-  --color-accent-pink: #EC4899;
-  --color-text-primary: #FFFFFF;
-  --color-text-secondary: #A1A1AA;
+  --color-app-bg: var(--theme-app-bg);
+  --color-card-bg: var(--theme-card-bg);
+  --color-card-border: var(--theme-card-border);
+  --color-accent-purple: var(--theme-accent-purple);
+  --color-accent-pink: var(--theme-accent-pink);
+  --color-text-primary: var(--theme-text-primary);
+  --color-text-secondary: var(--theme-text-secondary);
+}
+
+:root, html[data-theme="night"] {
+  --theme-app-bg: transparent; /* Changed to transparent so Canvas shows */
+  --theme-card-bg: rgba(28, 28, 30, 0.75);
+  --theme-card-border: rgba(44, 44, 46, 0.5);
+  --theme-accent-purple: #A855F7;
+  --theme-accent-pink: #EC4899;
+  --theme-text-primary: #FFFFFF;
+  --theme-text-secondary: #A1A1AA;
+}
+
+html[data-theme="day"] {
+  --theme-app-bg: transparent;
+  --theme-card-bg: rgba(255, 255, 255, 0.65);
+  --theme-card-border: rgba(255, 255, 255, 0.5);
+  --theme-accent-purple: #9333ea;
+  --theme-accent-pink: #db2777;
+  --theme-text-primary: #111827;
+  --theme-text-secondary: #4b5563;
+}
+
+html[data-theme="dawn"], html[data-theme="dusk"] {
+  --theme-app-bg: transparent;
+  --theme-card-bg: rgba(20, 15, 25, 0.75);
+  --theme-card-border: rgba(244, 114, 182, 0.2);
+  --theme-accent-purple: #c084fc;
+  --theme-accent-pink: #f472b6;
+  --theme-text-primary: #fdf2f8;
+  --theme-text-secondary: #fbcfe8;
 }
 
 *, *::before, *::after {
@@ -16,6 +46,7 @@
 
 html {
   scroll-behavior: smooth;
+  background: #0F0F12; /* Fallback */
 }
 
 body {
@@ -31,7 +62,7 @@ body {
 
 /* ── Scrollbar ──────────────────────────────────────────── */
 ::-webkit-scrollbar { width: 4px; }
-::-webkit-scrollbar-track { background: var(--color-app-bg); }
+::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--color-card-border); border-radius: 2px; }
 
 /* ── Airplane Boarding Pass Tear Effects ────────────────── */
@@ -66,10 +97,14 @@ body {
 
 /* ── Utilities ─────────────────────────────────────────── */
 .glass {
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--color-card-bg);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid var(--color-card-border);
+}
+
+.theme-transition {
+  transition: background-color 2s ease, color 2s ease, border-color 2s ease, box-shadow 2s ease;
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -1,9 +1,21 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
+import QRCode from "react-qr-code";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
+
+if (typeof window !== "undefined") {
+    gsap.registerPlugin(ScrollTrigger, useGSAP);
+}
 
 export default function Hero() {
     const [time, setTime] = useState("");
+    const containerRef = useRef<HTMLDivElement>(null);
+    const ticketRef = useRef<HTMLDivElement>(null);
+    const stubRef = useRef<HTMLDivElement>(null);
+    const titleRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         const update = () => {
@@ -18,65 +30,110 @@ export default function Hero() {
         return () => clearInterval(id);
     }, []);
 
+    useGSAP(() => {
+        const tl = gsap.timeline({
+            scrollTrigger: {
+                trigger: containerRef.current,
+                start: "top top",
+                end: "+=800", // Scroll 800px down to fully collapse it
+                scrub: 1,
+                pin: true,
+            }
+        });
+
+        // 1. Collapse the bottom ticket stub natively 
+        tl.to(stubRef.current, {
+            opacity: 0,
+            height: 0,
+            margin: 0,
+            padding: 0,
+            duration: 1,
+            ease: "power2.inOut"
+        }, 0);
+
+        // 2. Squash the main ticket max height bounds
+        tl.to(ticketRef.current, {
+            height: "140px",
+            minHeight: "140px",
+            borderRadius: "32px",
+            duration: 1,
+            ease: "power2.inOut"
+        }, 0);
+
+        // 3. Scale down the header to settle in the compressed header mode
+        tl.to(titleRef.current, {
+            scale: 0.7,
+            transformOrigin: "top center",
+            y: -10,
+            duration: 1,
+            ease: "power2.inOut"
+        }, 0);
+
+    }, { scope: containerRef });
+
     return (
         <section
             id="hero"
-            className="relative flex flex-col items-center justify-center min-h-screen px-4 pt-20 pb-10 overflow-hidden bg-cover bg-center"
+            ref={containerRef}
+            className="relative w-full min-h-screen flex flex-col items-center justify-center overflow-hidden px-4 pt-28 pb-10"
         >
-            {/* Background Glows */}
-            <div className="absolute top-1/4 left-1/4 w-[40vw] h-[40vw] rounded-full bg-[#A855F7]/10 blur-[120px] pointer-events-none" />
-            <div className="absolute bottom-1/4 right-1/4 w-[30vw] h-[30vw] rounded-full bg-[#EC4899]/10 blur-[100px] pointer-events-none" />
+            {/* Background Glows (static) */}
+            <div className="absolute top-1/4 left-1/4 w-[40vw] h-[40vw] rounded-full bg-[var(--color-accent-purple)]/10 blur-[120px] pointer-events-none" />
+            <div className="absolute bottom-1/4 right-1/4 w-[30vw] h-[30vw] rounded-full bg-[var(--color-accent-pink)]/10 blur-[100px] pointer-events-none" />
 
-            {/* Boarding Pass Container mimicking a Mobile Screen Layout */}
-            <div className="relative w-full max-w-[400px] h-[800px] max-h-[85vh] rounded-[48px] border-[8px] border-[#1C1C1E] bg-[#0F0F12] shadow-2xl flex flex-col justify-between overflow-hidden">
+            {/* Animated Ticket Wrapper */}
+            <div 
+                ref={ticketRef} 
+                className="relative w-full max-w-[420px] h-[800px] min-h-[600px] max-h-[85vh] rounded-[48px] glass shadow-2xl flex flex-col justify-between overflow-hidden origin-top will-change-transform"
+            >
                 
                 {/* Top Half: Dark Section with Giant Letters */}
-                <div className="flex-1 px-8 pt-12 pb-6 flex flex-col">
-                    <div className="text-center text-[#A1A1AA] text-sm tracking-widest font-medium mb-12 uppercase">
+                <div ref={titleRef} className="flex flex-col px-8 pt-10 shrink-0">
+                    <div className="text-center text-[var(--color-text-secondary)] text-sm tracking-widest font-bold uppercase mb-10 md:mb-12">
                         Boarding Pass
                     </div>
 
-                    {/* Flight Path Path */}
-                    <div className="relative flex justify-between items-center w-full mb-8">
+                    {/* Origin -> Dest Flight Path */}
+                    <div className="relative flex justify-between items-center w-full mb-6">
                         {/* Origin */}
                         <div className="flex flex-col">
-                            <span className="text-6xl font-extrabold text-white tracking-tighter">HD</span>
-                            <span className="text-[#A1A1AA] text-sm mt-2 ml-1">Frontend<br/>Developer</span>
+                            <span className="text-6xl font-extrabold tracking-tighter text-[var(--color-text-primary)]">HD</span>
+                            <span className="text-xs mt-2 ml-1 text-[var(--color-text-secondary)]">Frontend<br/>Developer</span>
                         </div>
                         
                         {/* Dotted path SVG / Line */}
-                        <div className="absolute top-[40%] left-[30%] right-[30%] h-0.5 border-t-2 border-dashed border-[#2C2C2E]">
-                            <div className="absolute -top-3 left-1/2 -translate-x-1/2 text-[#2C2C2E] text-lg">✈</div>
+                        <div className="absolute top-[40%] left-[30%] right-[30%] h-0.5 border-t-2 border-dashed border-[var(--color-card-border)]">
+                            <div className="absolute -top-3 left-1/2 -translate-x-1/2 text-[var(--color-text-secondary)] text-lg">✈</div>
                         </div>
 
                         {/* Destination */}
                         <div className="flex flex-col text-right">
-                            <span className="text-6xl font-extrabold text-white tracking-tighter">DEV</span>
-                            <span className="text-[#A1A1AA] text-sm mt-2 mr-1">Fullstack<br/>Engineer</span>
+                            <span className="text-6xl font-extrabold tracking-tighter text-[var(--color-text-primary)]">DEV</span>
+                            <span className="text-xs mt-2 mr-1 text-[var(--color-text-secondary)]">Fullstack<br/>Engineer</span>
                         </div>
                     </div>
                 </div>
 
-                {/* Bottom Half: White/Light Stub Card */}
-                <div className="relative bg-[#EAEAEA] m-4 rounded-[32px] overflow-hidden flex flex-col">
+                {/* Bottom Half: Passenger Details & QR Code Stub */}
+                <div ref={stubRef} className="relative m-4 rounded-[32px] overflow-hidden flex flex-col flex-1 bg-[var(--color-app-bg)]/60">
                     
-                    {/* The Soft Purple Gradients inside the white card */}
-                    <div className="absolute top-0 left-0 right-0 h-48 bg-gradient-to-b from-[#b084ff]/40 via-[#b084ff]/10 to-transparent pointer-events-none" />
+                    {/* Soft Purple Gradients inside the lower stub */}
+                    <div className="absolute top-0 left-0 right-0 h-48 bg-gradient-to-b from-[var(--color-accent-purple)]/20 to-transparent pointer-events-none" />
                     
-                    {/* Top edge cutouts (simulating ticket perforations inside the container) */}
-                    <div className="absolute -top-3 -left-3 w-6 h-6 rounded-full bg-[#0F0F12]" />
-                    <div className="absolute -top-3 -right-3 w-6 h-6 rounded-full bg-[#0F0F12]" />
+                    {/* Top edge cutouts simulating horizontal ticket perforations within container */}
+                    <div className="absolute -top-3 -left-3 w-6 h-6 rounded-full bg-[#0F0F12] shadow-inner" />
+                    <div className="absolute -top-3 -right-3 w-6 h-6 rounded-full bg-[#0F0F12] shadow-inner" />
 
-                    {/* Details */}
-                    <div className="px-6 py-6 pb-4 relative z-10 flex flex-col gap-5 text-[#1C1C1E]">
+                    {/* Grid Passenger Details */}
+                    <div className="px-6 py-6 pb-2 relative z-10 flex flex-col gap-4 text-[var(--color-text-primary)]">
                         {/* Row 1 */}
                         <div className="flex justify-between items-end">
                             <div className="flex flex-col">
-                                <span className="text-[#6B7280] text-[10px] uppercase font-bold tracking-widest">Passenger</span>
+                                <span className="text-[var(--color-text-secondary)] text-[10px] uppercase font-bold tracking-widest">Passenger</span>
                                 <span className="text-sm font-semibold mt-1">Himanshu Dubey</span>
                             </div>
                             <div className="flex flex-col text-right">
-                                <span className="text-[#6B7280] text-[10px] uppercase font-bold tracking-widest">Seat</span>
+                                <span className="text-[var(--color-text-secondary)] text-[10px] uppercase font-bold tracking-widest">Seat</span>
                                 <span className="text-sm font-semibold mt-1">1A</span>
                             </div>
                         </div>
@@ -84,11 +141,11 @@ export default function Hero() {
                         {/* Row 2 */}
                         <div className="flex justify-between items-end">
                             <div className="flex flex-col">
-                                <span className="text-[#6B7280] text-[10px] uppercase font-bold tracking-widest">Date</span>
-                                <span className="text-sm font-semibold mt-1">{new Date().toLocaleDateString("en-US", { month: "2-digit", day: "2-digit", year: "numeric" })}</span>
+                                <span className="text-[var(--color-text-secondary)] text-[10px] uppercase font-bold tracking-widest">Date</span>
+                                <span className="text-sm font-semibold mt-1">{new Date().toLocaleDateString("en-US", { month: "short", day: "2-digit", year: "numeric" })}</span>
                             </div>
                             <div className="flex flex-col text-right">
-                                <span className="text-[#6B7280] text-[10px] uppercase font-bold tracking-widest">Class</span>
+                                <span className="text-[var(--color-text-secondary)] text-[10px] uppercase font-bold tracking-widest">Class</span>
                                 <span className="text-sm font-semibold mt-1">First Class</span>
                             </div>
                         </div>
@@ -96,45 +153,38 @@ export default function Hero() {
                         {/* Row 3 */}
                         <div className="flex justify-between items-end">
                             <div className="flex flex-col">
-                                <span className="text-[#6B7280] text-[10px] uppercase font-bold tracking-widest">Flight Number</span>
+                                <span className="text-[var(--color-text-secondary)] text-[10px] uppercase font-bold tracking-widest">Flight Number</span>
                                 <span className="text-sm font-semibold mt-1">HD001</span>
                             </div>
                             <div className="flex flex-col text-right">
-                                <span className="text-[#6B7280] text-[10px] uppercase font-bold tracking-widest">Terminal</span>
+                                <span className="text-[var(--color-text-secondary)] text-[10px] uppercase font-bold tracking-widest">Terminal</span>
                                 <span className="text-sm font-semibold mt-1">Web</span>
                             </div>
                         </div>
+                    </div>
 
-                        {/* Row 4 */}
-                        <div className="flex justify-between items-end">
-                            <div className="flex flex-col">
-                                <span className="text-[#6B7280] text-[10px] uppercase font-bold tracking-widest">Departure</span>
-                                <span className="text-sm font-semibold mt-1">{time || "ON TIME"}</span>
-                            </div>
-                            <div className="flex flex-col text-right">
-                                <span className="text-[#6B7280] text-[10px] uppercase font-bold tracking-widest">Arrival</span>
-                                <span className="text-sm font-semibold mt-1">Future</span>
-                            </div>
+                    {/* LinkedIn QR Code Container */}
+                    <div className="flex-1 px-6 pb-6 mt-4 flex flex-col justify-center items-center relative z-10 w-full overflow-hidden">
+                        {/* Visual Tear Line separating text and QR */}
+                        <div className="w-full h-0.5 border-t-2 border-dashed border-[var(--color-card-border)]/50 mb-6" />
+                        
+                        <div className="text-[var(--color-text-secondary)] text-[10px] uppercase font-bold tracking-widest text-center mb-4">
+                            Scan to Connect on LinkedIn
                         </div>
-                    </div>
-
-                    {/* Barcode section separator with side cutouts */}
-                    <div className="relative w-full h-8 flex items-center">
-                        <div className="absolute left-0 w-3 h-6 bg-[#0F0F12] rounded-r-full" />
-                        <div className="flex-1 border-t-2 border-dashed border-[#1C1C1E]/20 mx-4" />
-                        <div className="absolute right-0 w-3 h-6 bg-[#0F0F12] rounded-l-full" />
-                    </div>
-
-                    {/* Barcode */}
-                    <div className="px-6 pb-6 pt-2 flex flex-col justify-center items-center relative z-10 w-full">
-                        <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-[#b084ff]/30 to-transparent pointer-events-none" />
-                        <div className="flex w-full h-12 justify-center gap-[2px] opacity-80 mix-blend-multiply">
-                            {/* Fake Barcode Lines */}
-                            {Array.from({ length: 48 }).map((_, i) => (
-                                <div key={i} className="bg-[#1C1C1E] h-full" style={{ width: `${Math.max(1, Math.random() * 4)}px` }} />
-                            ))}
+                        
+                        <div className="p-3 bg-white rounded-3xl shadow-xl hover:scale-105 transition-transform duration-300">
+                            <QRCode 
+                                value="https://www.linkedin.com/in/himanshuportfolio/" 
+                                bgColor="#FFFFFF" 
+                                fgColor="#000000" 
+                                size={140} 
+                            />
                         </div>
+                        
+                        {/* Tiny Bottom Fade */}
+                        <div className="absolute bottom-0 left-0 right-0 h-10 bg-gradient-to-t from-[var(--color-accent-pink)]/10 to-transparent pointer-events-none" />
                     </div>
+
                 </div>
             </div>
         </section>

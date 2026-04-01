@@ -26,13 +26,13 @@ export default function Navbar() {
 
     return (
         <header
-            className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+            className={`fixed top-6 left-1/2 -translate-x-1/2 z-50 transition-all duration-300 w-[95%] max-w-3xl rounded-full border border-[var(--color-card-border)] ${
                 scrolled
-                    ? "bg-[#0F0F12]/80 backdrop-blur-xl border-b border-[#2C2C2E]"
-                    : "bg-transparent"
+                    ? "bg-[var(--color-app-bg)]/80 backdrop-blur-2xl shadow-xl"
+                    : "bg-[var(--color-app-bg)]/40 backdrop-blur-md"
             }`}
         >
-            <div className="flex items-center justify-between px-6 h-16 max-w-5xl mx-auto">
+            <div className="flex items-center justify-between px-4 sm:px-6 h-14">
                 {/* Logo */}
                 <button
                     onClick={() => scrollTo("hero")}

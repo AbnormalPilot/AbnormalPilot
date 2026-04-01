@@ -26,45 +26,45 @@ export default function About() {
                 <div className="text-[#A855F7] text-sm font-bold tracking-[0.2em] uppercase">
                     Passenger Manifest
                 </div>
-                <h2 className="text-4xl md:text-5xl font-extrabold text-white tracking-tight">
+                <h2 className="text-4xl md:text-5xl font-extrabold text-text-primary tracking-tight">
                     Cleared for <br />
-                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#A855F7] to-[#EC4899]">
+                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-accent-purple)] to-[var(--color-accent-pink)]">
                         Takeoff
                     </span>
                 </h2>
-                <p className="text-[#A1A1AA] leading-relaxed text-lg">
+                <p className="text-text-secondary leading-relaxed text-lg">
                     I am a full-stack developer with over 3 years of flight time navigating modern web and mobile architectures. My mission is to build scalable, high-performance applications that deliver a first-class user experience.
                 </p>
                 <div className="flex gap-4 pt-4">
                     <div className="flex flex-col">
                         <span className="text-xs text-[#6B7280] font-bold uppercase tracking-widest">Base</span>
-                        <span className="text-white font-medium mt-1">India</span>
+                        <span className="text-text-primary font-medium mt-1">India</span>
                     </div>
                     <div className="w-px bg-[#2C2C2E]" />
                     <div className="flex flex-col">
                         <span className="text-xs text-[#6B7280] font-bold uppercase tracking-widest">Clearance</span>
-                        <span className="text-white font-medium mt-1">Full-Stack Ops</span>
+                        <span className="text-text-primary font-medium mt-1">Full-Stack Ops</span>
                     </div>
                 </div>
             </div>
 
             {/* "Seat Selection" App UI Mockup */}
-            <div className="w-full max-w-[360px] h-[640px] rounded-[40px] border-[6px] border-[#1C1C1E] bg-[#0F0F12] shadow-2xl flex flex-col pt-8 pb-6 px-6 relative overflow-hidden">
-                <div className="text-center font-semibold text-white mb-6">Select Skill</div>
+            <div className="w-full max-w-[360px] h-[640px] rounded-[40px] glass shadow-2xl flex flex-col pt-8 pb-6 px-6 relative overflow-hidden">
+                <div className="text-center font-semibold text-text-primary mb-6">Select Skill</div>
                 
                 {/* Legend */}
                 <div className="flex justify-between items-center mb-10 px-2">
                     <div className="flex items-center gap-2">
                         <div className="w-3 h-3 rounded-full bg-[#1C1C1E]" />
-                        <span className="text-[10px] text-[#A1A1AA]">Available</span>
+                        <span className="text-[10px] text-text-secondary">Available</span>
                     </div>
                     <div className="flex items-center gap-2">
                         <div className="w-3 h-3 rounded-full bg-[#2C2C2E]" />
-                        <span className="text-[10px] text-[#A1A1AA]">Core</span>
+                        <span className="text-[10px] text-text-secondary">Core</span>
                     </div>
                     <div className="flex items-center gap-2">
-                        <div className="w-3 h-3 rounded-full bg-gradient-to-tr from-[#A855F7] to-[#EC4899]" />
-                        <span className="text-[10px] text-white">Active</span>
+                        <div className="w-3 h-3 rounded-full bg-gradient-to-tr from-[var(--color-accent-purple)] to-[var(--color-accent-pink)]" />
+                        <span className="text-[10px] text-text-primary">Active</span>
                     </div>
                 </div>
 
