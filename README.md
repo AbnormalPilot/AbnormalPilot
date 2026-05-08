@@ -5,8 +5,6 @@
 I build developer tools and productivity software that solve real problems.
 Currently crafting [Focus Browser](https://github.com/AbnormalPilot/focusbrowser-app) — a distraction-free browser built with TypeScript — and expanding into systems programming with Go.
 
-Open to **GSoC** and **LFX Mentorship** opportunities.
-
 ---
 
 ### What I'm up to
