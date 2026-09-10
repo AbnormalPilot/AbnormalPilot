@@ -1,112 +1,124 @@
 @import "tailwindcss";
 
+/*
+ * Light-locked theme (the owner prefers light). One accent, cool neutrals.
+ * The page is a single flat canvas: sections carry no background of their own,
+ * so scrolling reads as one continuous surface rather than stacked panels.
+ * Radius system: --radius-btn for interactive controls, --radius-card for image frames.
+ */
 @theme {
-  --color-app-bg: var(--theme-app-bg);
-  --color-card-bg: var(--theme-card-bg);
-  --color-card-border: var(--theme-card-border);
-  --color-accent-purple: var(--theme-accent-purple);
-  --color-accent-pink: var(--theme-accent-pink);
-  --color-text-primary: var(--theme-text-primary);
-  --color-text-secondary: var(--theme-text-secondary);
+    --color-bg: #f6f7f9;
+    --color-surface: #ffffff;
+    --color-tint: #eceff4;
+    --color-ink: #0c0d10;
+    --color-ink-soft: #2b2e35;
+    --color-muted: #5d6169;
+    --color-line: #e2e5ea;
+    --color-line-strong: #c4c9d2;
+    --color-accent: #1f4fd2;
+    --color-accent-strong: #1740b0;
+
+    --font-sans: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+    --font-display: var(--font-schibsted), var(--font-geist), ui-sans-serif, sans-serif;
+    --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, monospace;
+
+    --radius-btn: 8px;
+    --radius-card: 16px;
+
+    --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+    --shadow-frame: 0 1px 2px rgb(12 13 16 / 0.05), 0 16px 40px -16px rgb(12 13 16 / 0.14);
 }
 
-:root, html[data-theme="night"] {
-  --theme-app-bg: transparent; /* Changed to transparent so Canvas shows */
-  --theme-card-bg: rgba(28, 28, 30, 0.75);
-  --theme-card-border: rgba(44, 44, 46, 0.5);
-  --theme-accent-purple: #A855F7;
-  --theme-accent-pink: #EC4899;
-  --theme-text-primary: #FFFFFF;
-  --theme-text-secondary: #A1A1AA;
+@layer base {
+    html {
+        scroll-behavior: smooth;
+        scroll-padding-top: 5.5rem;
+    }
+
+    body {
+        background-color: var(--color-bg);
+        color: var(--color-ink);
+        font-family: var(--font-sans);
+        -webkit-font-smoothing: antialiased;
+        text-rendering: optimizeLegibility;
+    }
+
+    ::selection {
+        background-color: color-mix(in srgb, var(--color-accent) 16%, transparent);
+    }
+
+    :focus-visible {
+        outline: 2px solid var(--color-accent);
+        outline-offset: 3px;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        html {
+            scroll-behavior: auto;
+        }
+    }
 }
 
-html[data-theme="day"] {
-  --theme-app-bg: transparent;
-  --theme-card-bg: rgba(255, 255, 255, 0.65);
-  --theme-card-border: rgba(255, 255, 255, 0.5);
-  --theme-accent-purple: #9333ea;
-  --theme-accent-pink: #db2777;
-  --theme-text-primary: #111827;
-  --theme-text-secondary: #4b5563;
+/* Page container. */
+@utility wrap {
+    width: min(1200px, calc(100% - 3rem));
+    margin-inline: auto;
 }
 
-html[data-theme="dawn"], html[data-theme="dusk"] {
-  --theme-app-bg: transparent;
-  --theme-card-bg: rgba(20, 15, 25, 0.75);
-  --theme-card-border: rgba(244, 114, 182, 0.2);
-  --theme-accent-purple: #c084fc;
-  --theme-accent-pink: #f472b6;
-  --theme-text-primary: #fdf2f8;
-  --theme-text-secondary: #fbcfe8;
+/* Display type. Line-height is set per use so sizes can tune it. */
+@utility t-display {
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: -0.035em;
+    text-wrap: balance;
 }
 
-*, *::before, *::after {
-  box-sizing: border-box;
+/* Small uppercase label. Rationed: at most one per three sections. */
+@utility t-label {
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
 }
 
-html {
-  scroll-behavior: smooth;
-  background: #0F0F12; /* Fallback */
+@utility btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-btn text-sm font-medium whitespace-nowrap transition-[background-color,border-color,color,transform] duration-200 active:translate-y-px;
 }
 
-body {
-  background: var(--color-app-bg);
-  color: var(--color-text-primary);
-  overflow-x: hidden;
-  font-family: var(--font-inter), system-ui, sans-serif;
-  font-size: 14px;
-  line-height: 1.6;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@utility btn-primary {
+    @apply btn bg-ink text-bg hover:bg-ink-soft;
 }
 
-/* ── Scrollbar ──────────────────────────────────────────── */
-::-webkit-scrollbar { width: 4px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: var(--color-card-border); border-radius: 2px; }
-
-/* ── Airplane Boarding Pass Tear Effects ────────────────── */
-.boarding-tear-top {
-  mask-image: radial-gradient(circle at 12px 100%, transparent 12px, black 13px);
-  -webkit-mask-image: radial-gradient(circle at 12px 100%, transparent 12px, black 13px);
+@utility btn-secondary {
+    @apply btn border border-line-strong text-ink hover:border-ink hover:bg-surface;
 }
 
-.boarding-tear-bottom {
-  mask-image: radial-gradient(circle at 12px 0%, transparent 12px, black 13px);
-  -webkit-mask-image: radial-gradient(circle at 12px 0%, transparent 12px, black 13px);
+/*
+ * Hero atmosphere. A cool wash sitting where the portrait does, tuned to the
+ * photograph's own studio background so the two meet without a visible seam.
+ */
+@utility hero-wash {
+    background:
+        radial-gradient(115% 80% at 74% 4%, #e6edf8 0%, rgb(230 237 248 / 0) 58%),
+        radial-gradient(75% 60% at 0% 100%, #eceef4 0%, rgb(236 238 244 / 0) 72%);
 }
 
-.boarding-tear-left {
-  mask-image: radial-gradient(circle at 100% 12px, transparent 12px, black 13px);
-  -webkit-mask-image: radial-gradient(circle at 100% 12px, transparent 12px, black 13px);
+/*
+ * The portrait is unframed: it dissolves into the page on the left and bottom
+ * instead of sitting in a card, so the subject reads as part of the surface.
+ */
+@utility portrait-fade {
+    --portrait-mask:
+        linear-gradient(to right, transparent 1%, #000 42%),
+        linear-gradient(to bottom, transparent 0%, #000 9%, #000 80%, transparent 100%);
+    -webkit-mask-image: var(--portrait-mask);
+    -webkit-mask-composite: source-in;
+    mask-image: var(--portrait-mask);
+    mask-composite: intersect;
 }
 
-.boarding-tear-right {
-  mask-image: radial-gradient(circle at 0% 12px, transparent 12px, black 13px);
-  -webkit-mask-image: radial-gradient(circle at 0% 12px, transparent 12px, black 13px);
-}
-
-/* Modern Gradient Glow Drop shadows */
-.glow-purple {
-  box-shadow: 0 0 40px rgba(168, 85, 247, 0.15);
-}
-
-.glow-btn {
-  box-shadow: 0 8px 32px rgba(168, 85, 247, 0.4);
-}
-
-/* ── Utilities ─────────────────────────────────────────── */
-.glass {
-  background: var(--color-card-bg);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border: 1px solid var(--color-card-border);
-}
-
-.theme-transition {
-  transition: background-color 2s ease, color 2s ease, border-color 2s ease, box-shadow 2s ease;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+/* Narrow screens put the portrait below the copy, so only the bottom fades. */
+@utility portrait-fade-b {
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 7%, #000 70%, transparent 100%);
+    mask-image: linear-gradient(to bottom, transparent 0%, #000 7%, #000 70%, transparent 100%);
 }
