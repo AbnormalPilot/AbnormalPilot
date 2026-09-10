@@ -1,73 +1,126 @@
 "use client";
 
-import { socials } from "@/constants";
-import { useEffect, useState } from "react";
+import { useGSAP } from "@gsap/react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { Menu, X } from "lucide-react";
+import { useRef, useState } from "react";
+import Mark from "@/components/Mark";
+import { CONTACT_LABEL, nav, profile } from "@/constants";
 
-const STEPS = [
-    { label: "Profile", id: "manifest" },
-    { label: "Flights", id: "work" },
-    { label: "Book", id: "contact" },
-];
+gsap.registerPlugin(useGSAP, ScrollTrigger);
+
+const MOBILE_LINKS = [...nav, { label: "Contact", id: "contact" }];
 
 export default function Navbar() {
-    const [scrolled, setScrolled] = useState(false);
+    const header = useRef<HTMLElement>(null);
+    const [open, setOpen] = useState(false);
 
-    useEffect(() => {
-        const handleScroll = () => {
-            setScrolled(window.scrollY > 20);
-        };
-        window.addEventListener("scroll", handleScroll);
-        return () => window.removeEventListener("scroll", handleScroll);
-    }, []);
+    useGSAP(
+        () => {
+            const el = header.current;
+            if (!el) return;
 
-    const scrollTo = (id: string) => {
-        document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
-    };
+            // Stuck state without a scroll listener: ScrollTrigger batches its reads.
+            ScrollTrigger.create({
+                start: 16,
+                end: "max",
+                onToggle: (self) => el.classList.toggle("is-stuck", self.isActive),
+            });
+
+            // Read position on a page with no panel breaks: the bar is the only
+            // cue for how far through the document you are, so it is scrubbed
+            // against total scroll rather than animated on its own clock.
+            gsap.fromTo(
+                "[data-progress]",
+                { scaleX: 0 },
+                { scaleX: 1, ease: "none", scrollTrigger: { start: 0, end: "max", scrub: 0.3 } },
+            );
+
+            // Current-section indicator so a one-page site still tells you where you are.
+            nav.forEach(({ id }) => {
+                const section = document.getElementById(id);
+                const link = el.querySelector<HTMLElement>(`[data-nav="${id}"]`);
+                if (!section || !link) return;
+                ScrollTrigger.create({
+                    trigger: section,
+                    start: "top 45%",
+                    end: "bottom 45%",
+                    onToggle: (self) => link.classList.toggle("is-active", self.isActive),
+                });
+            });
+        },
+        { scope: header },
+    );
 
     return (
         <header
-            className={`fixed top-6 left-1/2 -translate-x-1/2 z-50 transition-all duration-300 w-[95%] max-w-3xl rounded-full border border-[var(--color-card-border)] ${
-                scrolled
-                    ? "bg-[var(--color-app-bg)]/80 backdrop-blur-2xl shadow-xl"
-                    : "bg-[var(--color-app-bg)]/40 backdrop-blur-md"
-            }`}
+            ref={header}
+            className="fixed inset-x-0 top-0 z-50 border-b border-transparent transition-[background-color,border-color] duration-300 [&.is-stuck]:border-line [&.is-stuck]:bg-bg/85 [&.is-stuck]:backdrop-blur-xl"
         >
-            <div className="flex items-center justify-between px-4 sm:px-6 h-14">
-                {/* Logo */}
-                <button
-                    onClick={() => scrollTo("hero")}
-                    className="flex items-center gap-2 group"
-                >
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-[#A855F7] to-[#EC4899] p-[1px]">
-                        <div className="w-full h-full bg-[#1C1C1E] rounded-full flex items-center justify-center group-hover:bg-transparent transition-colors">
-                            <span className="text-[10px] text-white font-bold">HD</span>
-                        </div>
-                    </div>
-                </button>
+            <div className="wrap flex h-[68px] items-center justify-between gap-6">
+                <a href="#top" className="flex items-center gap-2.5" aria-label="Himanshu Dubey, back to top">
+                    <Mark className="text-ink" />
+                    <span className="font-display text-[1.05rem] font-semibold tracking-tight">
+                        {profile.name}
+                    </span>
+                </a>
 
-                {/* Steps */}
-                <nav className="hidden sm:flex items-center gap-6">
-                    {STEPS.map((g) => (
-                        <button
-                            key={g.id}
-                            onClick={() => scrollTo(g.id)}
-                            className="text-sm font-medium text-[#A1A1AA] hover:text-white transition-colors"
+                <nav className="hidden items-center gap-8 md:flex" aria-label="Sections">
+                    {nav.map((link) => (
+                        <a
+                            key={link.id}
+                            href={`#${link.id}`}
+                            data-nav={link.id}
+                            className="text-sm font-medium text-muted transition-colors hover:text-ink [&.is-active]:text-ink"
                         >
-                            {g.label}
-                        </button>
+                            {link.label}
+                        </a>
                     ))}
                 </nav>
 
-                {/* GitHub Action */}
-                <a
-                    href={socials.find((s) => s.name === "GitHub")?.href ?? "#"}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-xs font-semibold px-4 py-2 rounded-full bg-[#1C1C1E] border border-[#2C2C2E] hover:border-[#A855F7] text-white transition-all glow-btn-hover"
-                >
-                    GitHub ↗
-                </a>
+                <div className="flex items-center gap-3">
+                    <a href="#contact" className="btn-primary hidden h-10 px-4 sm:inline-flex">
+                        {CONTACT_LABEL}
+                    </a>
+                    <button
+                        type="button"
+                        onClick={() => setOpen((v) => !v)}
+                        aria-label={open ? "Close menu" : "Open menu"}
+                        aria-expanded={open}
+                        className="inline-flex h-10 w-10 items-center justify-center rounded-btn border border-line bg-surface md:hidden"
+                    >
+                        {open ? (
+                            <X size={16} strokeWidth={1.5} aria-hidden="true" />
+                        ) : (
+                            <Menu size={16} strokeWidth={1.5} aria-hidden="true" />
+                        )}
+                    </button>
+                </div>
             </div>
+
+            <div
+                data-progress
+                aria-hidden="true"
+                className="absolute inset-x-0 bottom-0 h-px origin-left scale-x-0 bg-accent opacity-0 transition-opacity duration-300 [.is-stuck_&]:opacity-100"
+            />
+
+            {open && (
+                <div className="border-t border-line bg-bg md:hidden">
+                    <nav className="wrap flex flex-col py-2" aria-label="Sections">
+                        {MOBILE_LINKS.map((link) => (
+                            <a
+                                key={link.id}
+                                href={`#${link.id}`}
+                                onClick={() => setOpen(false)}
+                                className="border-b border-line py-4 text-lg font-medium last:border-b-0"
+                            >
+                                {link.label}
+                            </a>
+                        ))}
+                    </nav>
+                </div>
+            )}
         </header>
     );
 }
